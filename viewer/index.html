@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<button class="fullscreen-button" onclick="toggleFullscreen()">Go Fullscreen</button>
+<div class="dingus">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Earth For Cardboard Viewer</title>
+    <style>
+        .dingus {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            display: flex;
+            width: 100vw;
+            height: 95vh; /* Adjusted height */
+        }
+        iframe {
+            width: 50vw;
+            height: 100%; /* Full height of the container */
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <iframe id="iframe1"></iframe>
+        <iframe id="iframe2"></iframe>
+    </div>
+    <script>
+        function getQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lat = urlParams.get('lat');
+            const lng = urlParams.get('lng');
+            return { lat, lng };
+        }
+
+        function setIframeSrc() {
+            const { lat, lng } = getQueryParams();
+            let baseUrl = "../embed/";
+            if (lat && lng) {
+                baseUrl += `?lat=${lat}&lng=${lng}`;
+            }
+            document.getElementById('iframe1').src = baseUrl;
+            document.getElementById('iframe2').src = baseUrl;
+        }
+
+        function toggleFullscreen() {
+            const button = document.querySelector('.fullscreen-button');
+            if (document.fullscreenElement) {
+                document.exitFullscreen().then(() => {
+                    button.style.display = 'block';
+                });
+            } else {
+                document.documentElement.requestFullscreen().then(() => {
+                    button.style.display = 'none';
+                });
+            }
+        }
+
+        setIframeSrc(); // Set the iframe sources based on URL parameters
+    </script>
+</body>
+</div class="dingus">
+</html>
