@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>Google Earth For Cardboard Embed</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #pano {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pano"></div>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initialize&v=weekly"
+      defer
+    ></script>
+    <script>
+      function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, "\\$&");
+        const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+      function initialize() {
+        const lat = parseFloat(getParameterByName("lat")) || 42.345573;
+        const lng = parseFloat(getParameterByName("lng")) || -71.098326;
+        const position = { lat, lng };
+        const panorama = new google.maps.StreetViewPanorama(
+          document.getElementById("pano"),
+          {
+            position: position,
+            pov: {
+              heading: 34,
+              pitch: 10,
+            },
+            disableDefaultUI: true // Hides the default UI controls
+          }
+        );
+      }
+
+      window.initialize = initialize;
+    </script>
+  </body>
+</html>
