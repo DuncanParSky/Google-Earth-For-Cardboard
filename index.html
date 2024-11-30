@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Earth For Cardboard</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+        #goButton {
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        let map;
+        let selectedLocation = { lat: 0, lng: 0 };
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 0, lng: 0 },
+                zoom: 2,
+                disableDefaultUI: true,
+            });
+
+            map.addListener('click', function(event) {
+                selectedLocation = {
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng()
+                };
+                console.log('Selected location:', selectedLocation);
+            });
+        }
+
+        function goToLocation() {
+            const lat = selectedLocation.lat;
+            const lng = selectedLocation.lng;
+            const url = `./viewer/?lat=${lat}&lng=${lng}`;
+            window.location.href = url;
+        }
+    </script>
+</head>
+<body>
+    <h1>Google Earth For Cardboard</h1>
+    <p>1. Turn your device into landscape mode.</p>
+    <p>2. Tap where you want to go on the map.</p>
+    <p>3. Tap "Let's go!"</p>
+    <p>4. On the page it sends you to, tap "Go Fullscreen".</p>
+    <p>5. Put your phone in your cardboard viewer.</p>
+    <p>To look around, tilt your head. To move, you will need to tap in the direction you want to go in, which means you need a way to tap the screen on both sides. The best way to do this is to cut a hole in the bottom of the viewer on both sides, allowing your fingers to press the screen on both sides. I may implement a better moving method in the future.</p>
+    <p><i>Tested on Firefox 129.0, Android 9, SM-G970U, and a POP! Cardboard 3.0 Viewer.<i></p>
+    <div id="map"></div>
+    <button id="goButton" onclick="goToLocation()">Let's go!</button>
+	<br>
+    <br>
+    <br>
+    <br>
+    <script async
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
+</body>
+</html>
